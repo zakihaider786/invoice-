@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Invoice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"> <!-- Cursive Font -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="invoice" id="invoice">
+        <!-- Watermark -->
+        <div class="watermark">DCreva</div>
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="logo">
+                <h1>DCreva</h1>
+                <p class="subtitle">Your Brand, Our Creativity</p>
+            </div>
+            <div class="invoice-info">
+                <h2>INVOICE</h2>
+                <p>Invoice No: <input type="text" class="editable" value="#101" id="invoiceNo"></p>
+                <p>Invoice Date: <input type="date" class="editable" value="2024-12-12" id="invoiceDate"></p>
+            </div>
+        </div>
+
+        <!-- Billed To Section -->
+        <div class="billed-to">
+            <p><strong>Billed to:</strong></p>
+            <textarea id="billedTo" class="editable">TO DNS HOMES PVT. LTD, PATNA</textarea>
+        </div>
+
+        <!-- Services Table -->
+        <table class="services">
+            <thead>
+                <tr>
+                    <th>S.NO.</th>
+                    <th>SERVICE DESCRIPTION</th>
+                    <th>DURATION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" class="editable" value="Creative Production"></td>
+                    <td><input type="text" class="editable" value="1 Nov to 30 Nov 2024"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" class="editable" value="Video Production"></td>
+                    <td><input type="text" class="editable" value="1 Nov to 30 Nov 2024"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" class="editable" value="Social Media Management"></td>
+                    <td><input type="text" class="editable" value="1 Nov to 30 Nov 2024"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="text" class="editable" value="Additional Service"></td>
+                    <td><input type="text" class="editable" value="Custom Duration"></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><input type="text" class="editable" value="Extra Service"></td>
+                    <td><input type="text" class="editable" value="Custom Duration"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Total Section -->
+        <div class="total">
+            <p>Total Amount Payable (₹): <input type="text" class="editable" value="10000" id="totalPayable"></p>
+        </div>
+
+        <!-- Payment Method Section -->
+        <div class="payment">
+            <p><strong>PAYMENT METHOD</strong></p>
+            <p>Account No: <input type="text" class="editable" value="34325605291"></p>
+            <p>Account Name: <input type="text" class="editable" value="Sayyed Ali"></p>
+            <p>Bank Name: <input type="text" class="editable" value="State Bank Of India"></p>
+            <p>IFSC Code: <input type="text" class="editable" value="SBIN0013078"></p>
+        </div>
+
+        <!-- Signature Area -->
+        <div class="signature-area">
+            <p>Authorized Signature:</p>
+            <div class="signature-box">
+                <p style="font-family: 'Pacifico', cursive; font-size: 24px; color: #000;">Sayyed Ali</p>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p><strong>THANK YOU FOR YOUR BUSINESS</strong></p>
+            <p>FOR ANY QUERIES, PLEASE CONTACT US AT</p>
+            <p>Email: <a href="mailto:INFODCREVA@GMAIL.COM">INFODCREVA@GMAIL.COM</a></p>
+            <p>Phone: 7460006941 | Website: <a href="http://www.dcreva.com" target="_blank">www.dcreva.com</a></p>
+            <p>Address: Sarfarajganj Balaganj Lucknow ~ 226003</p>
+        </footer>
+    </div>
+
+    <!-- Download Button -->
+    <button id="download" class="download-btn">Download as PDF</button>
+
+    <script>
+        document.getElementById('download').addEventListener('click', function () {
+            const invoice = document.getElementById('invoice');
+
+            // Remove borders and other styling from inputs for PDF
+            const inputs = invoice.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.style.border = 'none';
+                input.style.background = 'transparent';
+                input.style.outline = 'none';
+                input.style.pointerEvents = 'none';
+            });
+
+            // Convert to PDF
+            const options = {
+                margin: [10, 10, 10, 10],
+                filename: 'invoice.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3 },
+                jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(options).from(invoice).save().then(() => {
+                // Revert styling for editable inputs after download
+                inputs.forEach(input => {
+                    input.style.border = '';
+                    input.style.background = '';
+                    input.style.outline = '';
+                    input.style.pointerEvents = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
